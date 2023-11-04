@@ -1,5 +1,6 @@
 import bcd from "@mdn/browser-compat-data" assert { type: "json" };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function query(path: string, data: any = bcd) {
   const pathElements = path.split(".");
   let lookup = data;
