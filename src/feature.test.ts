@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 
+import { Identifier } from "@mdn/browser-compat-data";
+
 import { feature } from "./feature";
 import { query } from "./query";
 
@@ -7,7 +9,7 @@ describe("feature()", function () {
   it("accepts __compat object", function () {
     feature(
       "css.properties.border-color",
-      query("css.properties.border-color"),
+      query("css.properties.border-color") as Identifier,
     );
   });
 
