@@ -1,4 +1,8 @@
-import { SimpleSupportStatement, VersionValue } from "@mdn/browser-compat-data";
+import {
+  FlagStatement,
+  SimpleSupportStatement,
+  VersionValue,
+} from "@mdn/browser-compat-data";
 
 export function statement(
   incoming: Partial<SimpleSupportStatement> | RealSupportStatement,
@@ -54,12 +58,17 @@ export class SupportStatement {
     return version.includes("≤");
   }
 
-  _isClean(): boolean {
+  hasCaveats(): boolean {
     return (
-      !this.partial_implementation &&
-      this.data?.prefix === undefined &&
-      this.data?.flags?.length === 0
+      this.data.alternative_name !== undefined ||
+      this.flags.length > 0 ||
+      this.partial_implementation === true ||
+      this.data.prefix !== undefined
     );
+  }
+
+  get flags(): FlagStatement[] {
+    return this.data?.flags ?? [];
   }
 
   get partial_implementation(): boolean {

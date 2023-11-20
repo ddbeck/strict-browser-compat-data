@@ -25,6 +25,67 @@ describe("statements", function () {
   });
 
   describe("SupportStatement", function () {
+    describe("#hasCaveats", function () {
+      const s = {
+        version_added: "1",
+        version_removed: "2",
+      };
+
+      it("returns true for alternative name", function () {
+        const st = new SupportStatement({
+          alternative_name: "NonStandard",
+          ...s,
+        });
+        assert.equal(st.hasCaveats(), true);
+      });
+
+      it("returns true for flags", function () {
+        const flag = {
+          type: "preference" as const,
+          name: "dom.streams.enabled",
+          value_to_set: "true",
+        };
+        const st = new SupportStatement({ flags: [flag], ...s });
+        assert.equal(st.hasCaveats(), true);
+      });
+
+      it("returns true for partial implementation", function () {
+        const st = new SupportStatement({
+          partial_implementation: true,
+          notes: "Some note…",
+          ...s,
+        });
+        assert.equal(st.hasCaveats(), true);
+      });
+
+      it("returns true for prefixes", function () {
+        const st = new SupportStatement({ prefix: "-webkit-", ...s });
+        assert.equal(st.hasCaveats(), true);
+      });
+    });
+
+    describe("#flags", function () {
+      const s = {
+        version_added: "1",
+        version_removed: "2",
+      };
+
+      it("return empty array for no flags", function () {
+        const st = new SupportStatement(s);
+        assert.ok(st.flags.length === 0);
+      });
+
+      it("return array with flags", function () {
+        const flag = {
+          type: "preference" as const,
+          name: "dom.streams.enabled",
+          value_to_set: "true",
+        };
+        const st = new SupportStatement({ flags: [flag], ...s });
+        assert.ok(st.flags.length === 1);
+      });
+    });
+
     describe("#partial_implementation", function () {
       it("returns value", function () {
         const s = new SupportStatement({
