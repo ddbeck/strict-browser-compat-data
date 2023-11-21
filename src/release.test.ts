@@ -38,5 +38,12 @@ describe("Release", function () {
       const chrome101 = browser("chrome").version("101");
       assert.equal(chrome101.compare(chrome100), 1);
     });
+
+    it("handles non-lexically sorted cases", function () {
+      const fx15 = browser("firefox").version("1.5");
+      const fx121 = browser("firefox").version("121");
+      assert.equal(fx121.compare(fx15), 1);
+      assert.equal(fx15.compare(fx121), -1);
+    });
   });
 });

@@ -42,6 +42,8 @@ export class Browser {
       for (const [key, value] of Object.entries(this.data.releases)) {
         this._releases.push(new Release(this, key, value));
       }
+
+      this._releases.sort((a, b) => a.date().getTime() - b.date().getTime());
     }
 
     return this._releases;
