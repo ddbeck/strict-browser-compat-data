@@ -24,5 +24,15 @@ describe("browser()", function () {
         assert(browser("firefox").releases().length > 99);
       });
     });
+
+    describe("#version()", function () {
+      it("returns a release by version number string", function () {
+        assert.equal(browser("chrome").version("99").version, "99");
+      });
+
+      it("throw for invalid version number", function () {
+        assert.throws(() => browser("chrome").version("1.0"), Error);
+      });
+    });
   });
 });

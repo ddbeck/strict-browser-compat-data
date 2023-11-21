@@ -56,4 +56,12 @@ export class Browser {
 
     return curr;
   }
+
+  version(versionString: string): Release {
+    const result = this.releases().find((r) => r.version === versionString);
+    if (result === undefined) {
+      throw Error(`${browser} does not have a '${versionString}' release.`);
+    }
+    return result;
+  }
 }
