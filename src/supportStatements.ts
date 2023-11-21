@@ -1,25 +1,33 @@
 import {
+  BrowserName,
   FlagStatement,
   SimpleSupportStatement,
   VersionValue,
 } from "@mdn/browser-compat-data";
 
+import { browser } from "./browser";
+import { Release } from "./release";
+
 export function statement(
-  incoming: Partial<SimpleSupportStatement> | RealSupportStatement,
+  incoming:
+    | Partial<SimpleSupportStatement>
+    | SupportStatement
+    | RealSupportStatement,
+  browser?: BrowserName,
 ): SupportStatement {
   if (incoming instanceof RealSupportStatement) {
     return incoming;
   }
 
   if (incoming instanceof SupportStatement) {
-    return statement(incoming.data);
+    return statement(incoming.data, browser);
   }
 
   try {
-    return new RealSupportStatement(incoming);
+    return new RealSupportStatement(incoming, browser);
   } catch (err) {
     if (err instanceof NonRealValueError) {
-      return new SupportStatement(incoming);
+      return new SupportStatement(incoming, browser);
     }
     throw err;
   }
@@ -33,9 +41,11 @@ export class NonRealValueError extends Error {
 
 export class SupportStatement {
   data: Partial<SimpleSupportStatement>;
+  browser: BrowserName | undefined;
 
-  constructor(data: Partial<SimpleSupportStatement>) {
+  constructor(data: Partial<SimpleSupportStatement>, browser?: BrowserName) {
     this.data = data;
+    this.browser = browser;
   }
 
   _isRanged(key: "version_added" | "version_removed" | undefined): boolean {
@@ -88,10 +98,10 @@ export class SupportStatement {
 }
 
 export class RealSupportStatement extends SupportStatement {
-  constructor(data: Partial<SimpleSupportStatement>) {
+  constructor(data: Partial<SimpleSupportStatement>, browser?: BrowserName) {
     // Strictness guarantee: Support statements never contain non-real values
 
-    super(data);
+    super(data, browser);
 
     if (!Object.hasOwn(data, "version_added")) {
       throw new Error("version_added missing from simple support statement");
@@ -108,5 +118,41 @@ export class RealSupportStatement extends SupportStatement {
         throw new NonRealValueError("version_added", version_removed);
       }
     }
+  }
+
+  get version_added() {
+    return super.version_added as string | false;
+  }
+
+  get version_removed() {
+    return super.version_removed as string | false;
+  }
+
+  supportedBy() {
+    if (this.browser === undefined) {
+      throw Error("This support statement's browser is unknown.");
+    }
+
+    if (this.version_added === false) {
+      return [];
+    }
+
+    let start: Release;
+    if (this.version_added.startsWith("≤")) {
+      start = browser(this.browser).version(this.version_added.slice(1));
+    } else {
+      start = browser(this.browser).version(this.version_added);
+    }
+
+    if (this.version_removed === false) {
+      return browser(this.browser)
+        .releases()
+        .filter((rel) => rel.compare(start) >= 0); // Release is on or after start
+    }
+
+    const end: Release = browser(this.browser).version(this.version_removed);
+    return browser(this.browser)
+      .releases()
+      .filter((rel) => rel.compare(start) >= 0 && rel.compare(end) < 0); // Release is on after start and before the end
   }
 }

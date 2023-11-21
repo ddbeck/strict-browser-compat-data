@@ -5,6 +5,7 @@ import {
   SupportStatement,
   statement,
 } from "./supportStatements";
+import { browser } from "./browser";
 
 describe("statements", function () {
   describe("statement()", function () {
@@ -137,60 +138,77 @@ describe("statements", function () {
   });
 
   describe("RealSupportStatement", function () {
-    it("throws for empty support statement", function () {
-      assert.throws(() => new RealSupportStatement({}));
-    });
+    describe("#constructor", function () {
+      it("throws for empty support statement", function () {
+        assert.throws(() => new RealSupportStatement({}));
+      });
 
-    it("throws for missing version_added", function () {
-      assert.throws(() => new RealSupportStatement({ version_removed: false }));
-    });
+      it("throws for missing version_added", function () {
+        assert.throws(
+          () => new RealSupportStatement({ version_removed: false }),
+        );
+      });
 
-    it("throws for explicitly undefined version_added or version_removed", function () {
-      assert.throws(
-        () => new RealSupportStatement({ version_added: undefined }),
-      );
-      assert.throws(
-        () =>
-          new RealSupportStatement({
-            version_added: "1",
-            version_removed: undefined,
-          }),
-      );
-    });
+      it("throws for explicitly undefined version_added or version_removed", function () {
+        assert.throws(
+          () => new RealSupportStatement({ version_added: undefined }),
+        );
+        assert.throws(
+          () =>
+            new RealSupportStatement({
+              version_added: "1",
+              version_removed: undefined,
+            }),
+        );
+      });
 
-    it("throws for null version_added or version_removed", function () {
-      assert.throws(() => new RealSupportStatement({ version_added: null }));
-      assert.throws(
-        () =>
-          new RealSupportStatement({
-            version_added: "1",
-            version_removed: null,
-          }),
-      );
-    });
+      it("throws for null version_added or version_removed", function () {
+        assert.throws(() => new RealSupportStatement({ version_added: null }));
+        assert.throws(
+          () =>
+            new RealSupportStatement({
+              version_added: "1",
+              version_removed: null,
+            }),
+        );
+      });
 
-    it("throws for true version_added or version_removed", function () {
-      assert.throws(() => new RealSupportStatement({ version_added: true }));
-      assert.throws(
-        () =>
-          new RealSupportStatement({
-            version_added: "1",
-            version_removed: true,
-          }),
-      );
-    });
+      it("throws for true version_added or version_removed", function () {
+        assert.throws(() => new RealSupportStatement({ version_added: true }));
+        assert.throws(
+          () =>
+            new RealSupportStatement({
+              version_added: "1",
+              version_removed: true,
+            }),
+        );
+      });
 
-    it("does not throw for false version_added or version_removed", function () {
-      assert.doesNotThrow(
-        () => new RealSupportStatement({ version_added: false }),
-      );
-      assert.doesNotThrow(
-        () =>
-          new RealSupportStatement({
-            version_added: "1",
-            version_removed: false,
-          }),
-      );
+      it("does not throw for false version_added or version_removed", function () {
+        assert.doesNotThrow(
+          () => new RealSupportStatement({ version_added: false }),
+        );
+        assert.doesNotThrow(
+          () =>
+            new RealSupportStatement({
+              version_added: "1",
+              version_removed: false,
+            }),
+        );
+      });
+    });
+    describe("#supportedBy", function () {
+      it("returns an array of releases represented by the statement", function () {
+        const st = new RealSupportStatement({ version_added: "1" }, "chrome");
+        const rels = st.supportedBy();
+        assert.equal(rels.length, browser("chrome").releases().length);
+      });
+
+      it("handles ≤ gracefully", function () {
+        const st = new RealSupportStatement({ version_added: "≤11" }, "chrome");
+        const rels = st.supportedBy();
+        assert.equal(rels.length, browser("chrome").releases().length - 10);
+      });
     });
   });
 });

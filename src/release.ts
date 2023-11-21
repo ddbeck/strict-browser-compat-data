@@ -24,4 +24,22 @@ export class Release {
 
     return new Date(release_date);
   }
+
+  compare(otherRelease: Release) {
+    if (otherRelease.browser !== this.browser) {
+      throw Error(
+        `Cannot compare releases of differing browsers (${this.browser} versus ${otherRelease.browser})`,
+      );
+    }
+
+    const index = this.browser.releases().indexOf(this);
+    const otherIndex = this.browser.releases().indexOf(otherRelease);
+
+    if (index < otherIndex) {
+      return -1;
+    } else if (index > otherIndex) {
+      return 1;
+    }
+    return 0;
+  }
 }
