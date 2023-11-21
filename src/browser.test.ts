@@ -7,6 +7,10 @@ describe("browser()", function () {
     assert.throws(() => browser("crumpet"), Error);
   });
 
+  it("gives you comparably equal browser objects", function () {
+    assert.equal(browser("chrome"), browser("chrome"));
+  });
+
   describe("Browser", function () {
     describe("#toString()", function () {
       it("returns something useful", function () {

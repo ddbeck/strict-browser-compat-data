@@ -3,9 +3,18 @@ import { BrowserName, BrowserStatement } from "@mdn/browser-compat-data";
 import { query } from "./query";
 import { Release } from "./release";
 
+const _browsers = new Map<string, Browser>();
+
 export function browser(name: string): Browser {
-  const data = query(`browsers.${name}`) as BrowserStatement;
-  return new Browser(name as BrowserName, data);
+  let b = _browsers.get(name);
+
+  if (b === undefined) {
+    const data = query(`browsers.${name}`) as BrowserStatement;
+    b = new Browser(name as BrowserName, data);
+    _browsers.set(name, b);
+  }
+
+  return b;
 }
 
 export class Browser {
