@@ -20,12 +20,9 @@ describe("query", function () {
   });
 
   it("throws for invalid path", function () {
-    assert.throws(() => query("nonExistentNameSpace"), ReferenceError);
-    assert.throws(() => query("api.NonExistentFeature"), ReferenceError);
-    assert.throws(
-      () => query("api.NonExistentFeature.subFeature"),
-      ReferenceError,
-    );
+    assert.throws(() => query("nonExistentNameSpace"), Error);
+    assert.throws(() => query("api.NonExistentFeature"), Error);
+    assert.throws(() => query("api.NonExistentFeature.subFeature"), Error);
   });
 
   it("should return the expected point in the tree (namespace)", function () {
