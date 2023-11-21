@@ -8,8 +8,17 @@ describe("browser()", function () {
   });
 
   describe("Browser", function () {
-    it("#toString()", function () {
-      assert.equal(`${browser("chrome")}`, "[Browser Chrome]");
+    describe("#toString()", function () {
+      it("returns something useful", function () {
+        assert.equal(`${browser("chrome")}`, "[Browser Chrome]");
+      });
+    });
+
+    describe("#releases()", function () {
+      it("returns an array of releases", function () {
+        assert(browser("chrome").releases().length > 99);
+        assert(browser("firefox").releases().length > 99);
+      });
     });
   });
 });
