@@ -27,4 +27,9 @@ export class Feature {
     this.id = id;
     this.data = data;
   }
+
+  toString() {
+    return `[Feature ${this.id}]`;
+  }
+
 }
