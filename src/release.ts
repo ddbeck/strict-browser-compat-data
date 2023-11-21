@@ -15,4 +15,13 @@ export class Release {
   toString() {
     return `[${this.browser.data.name} ${this.version}]`;
   }
+
+  date(): Date {
+    const { release_date } = this.data;
+    if (release_date === undefined) {
+      return new Date(NaN);
+    }
+
+    return new Date(release_date);
+  }
 }
