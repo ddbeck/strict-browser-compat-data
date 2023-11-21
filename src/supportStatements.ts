@@ -7,6 +7,7 @@ import {
 
 import { browser } from "./browser";
 import { Release } from "./release";
+import { Feature } from "./feature";
 
 export function statement(
   incoming:
@@ -14,20 +15,21 @@ export function statement(
     | SupportStatement
     | RealSupportStatement,
   browser?: BrowserName,
+  feature?: Feature,
 ): SupportStatement {
   if (incoming instanceof RealSupportStatement) {
     return incoming;
   }
 
   if (incoming instanceof SupportStatement) {
-    return statement(incoming.data, browser);
+    return statement(incoming.data, browser, feature);
   }
 
   try {
-    return new RealSupportStatement(incoming, browser);
+    return new RealSupportStatement(incoming, browser, feature);
   } catch (err) {
     if (err instanceof NonRealValueError) {
-      return new SupportStatement(incoming, browser);
+      return new SupportStatement(incoming, browser, feature);
     }
     throw err;
   }
@@ -42,10 +44,16 @@ export class NonRealValueError extends Error {
 export class SupportStatement {
   data: Partial<SimpleSupportStatement>;
   browser: BrowserName | undefined;
+  feature: Feature | undefined;
 
-  constructor(data: Partial<SimpleSupportStatement>, browser?: BrowserName) {
+  constructor(
+    data: Partial<SimpleSupportStatement>,
+    browser?: BrowserName,
+    feature?: Feature,
+  ) {
     this.data = data;
     this.browser = browser;
+    this.feature = feature;
   }
 
   _isRanged(key: "version_added" | "version_removed" | undefined): boolean {
@@ -98,10 +106,14 @@ export class SupportStatement {
 }
 
 export class RealSupportStatement extends SupportStatement {
-  constructor(data: Partial<SimpleSupportStatement>, browser?: BrowserName) {
+  constructor(
+    data: Partial<SimpleSupportStatement>,
+    browser?: BrowserName,
+    feature?: Feature,
+  ) {
     // Strictness guarantee: Support statements never contain non-real values
 
-    super(data, browser);
+    super(data, browser, feature);
 
     if (!Object.hasOwn(data, "version_added")) {
       throw new Error("version_added missing from simple support statement");
@@ -131,6 +143,15 @@ export class RealSupportStatement extends SupportStatement {
   supportedBy() {
     if (this.browser === undefined) {
       throw Error("This support statement's browser is unknown.");
+    }
+
+    if (this.hasCaveats()) {
+      console.error(
+        `${this.feature ?? "Unknown feature"} has caveats in ${
+          browser(this.browser).data.name
+        } Not reporting as supporting.`,
+      );
+      return [];
     }
 
     if (this.version_added === false) {
