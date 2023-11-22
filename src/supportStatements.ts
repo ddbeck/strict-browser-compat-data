@@ -146,11 +146,6 @@ export class RealSupportStatement extends SupportStatement {
     }
 
     if (this.hasCaveats()) {
-      console.error(
-        `${this.feature ?? "Unknown feature"} has caveats in ${
-          browser(this.browser).data.name
-        } Not reporting as supporting.`,
-      );
       return [];
     }
 
