@@ -6,8 +6,11 @@ import { Release } from "./release";
 describe("Release", function () {
   describe("toString()", function () {
     it("returns something useful", function () {
-      const r = browser("chrome").releases().at(-1) as Release;
-      assert(r.toString().startsWith("[Chrome 1"), r.toString());
+      const latestNonPreview = browser("chrome").releases().at(-2) as Release;
+      assert(
+        latestNonPreview.toString().startsWith("[Chrome 1"),
+        latestNonPreview.toString(),
+      );
     });
   });
 

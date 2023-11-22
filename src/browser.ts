@@ -44,6 +44,12 @@ export class Browser {
       }
 
       this._releases.sort((a, b) => a.date().getTime() - b.date().getTime());
+
+      if (this.data.preview_name) {
+        this._releases.push(
+          new Release(this, "preview", { status: "nightly" }),
+        );
+      }
     }
 
     return this._releases;
