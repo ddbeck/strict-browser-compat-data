@@ -42,4 +42,11 @@ export class Release {
     }
     return 0;
   }
+
+  isPrerelease(): boolean {
+    if (["beta", "nightly", "planned"].includes(this.data.status)) {
+      return true;
+    }
+    return false;
+  }
 }

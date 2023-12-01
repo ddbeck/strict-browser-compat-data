@@ -49,4 +49,29 @@ describe("Release", function () {
       assert.equal(fx15.compare(fx121), -1);
     });
   });
+
+  describe("#isPrerelease()", function () {
+    it("returns false for the current release", function () {
+      const chromeCurrent = browser("chrome").current();
+      assert.equal(chromeCurrent.isPrerelease(), false);
+    });
+    it("returns false for a previous release", function () {
+      const chrome100 = browser("chrome").version("100");
+      assert.equal(chrome100.isPrerelease(), false);
+    });
+    it("returns true for the next release", function () {
+      const chrome = browser("chrome");
+      const chromeCurrent = chrome.current();
+      const chromeNext = chrome
+        .releases()
+        .at(chrome.releases().indexOf(chromeCurrent) + 1) as Release;
+      console.log(chromeNext);
+      assert.equal(chromeNext.isPrerelease(), true);
+    });
+    it("returns true for the preview release", function () {
+      const safariPreview = browser("safari").version("preview");
+      console.log(safariPreview);
+      assert.equal(safariPreview.isPrerelease(), true);
+    });
+  });
 });
