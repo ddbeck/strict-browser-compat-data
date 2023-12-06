@@ -35,7 +35,7 @@ export class Feature {
     return `[Feature ${this.id}]`;
   }
 
-  _supportBy(browser: Browser): Release[] {
+  _supportedBy(browser: Browser): Release[] {
     const support = this.data?.__compat?.support;
     if (support === undefined) {
       throw Error("This feature contains no __compat object.");
@@ -81,11 +81,19 @@ export class Feature {
     return releases;
   }
 
-  supportedBy(): Release[] {
-    const browsers = Object.keys(this.data?.__compat?.support || {}).map((id) =>
-      browser(id),
-    );
+  supportedBy(omit?: Browser[]): Release[] {
+    const ignorables = new Set(omit);
 
-    return browsers.map((b) => this._supportBy(b)).flat();
+    const browserIds = Object.keys(this.data?.__compat?.support || {});
+    const browsers = browserIds.map((id) => browser(id));
+
+    const result = [];
+    for (const b of browsers) {
+      if (!ignorables.has(b)) {
+        result.push(...this._supportedBy(b));
+      }
+    }
+
+    return result;
   }
 }
