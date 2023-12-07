@@ -28,7 +28,11 @@ export class Browser {
   }
 
   toString(): string {
-    return `[Browser ${this.data.name}]`;
+    return `[Browser ${this.name}]`;
+  }
+
+  get name(): string {
+    return this.data.name;
   }
 
   releases(): Release[] {

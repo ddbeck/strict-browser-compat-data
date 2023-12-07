@@ -13,7 +13,7 @@ export class Release {
   }
 
   toString() {
-    return `[${this.browser.data.name} ${this.version}]`;
+    return `[${this.browser.name} ${this.version}]`;
   }
 
   date(): Date {

@@ -91,7 +91,7 @@ function formatKeystoneDate(report: StatusReport): string {
 function formatVersion(browser, report): string {
   const release: Release | undefined = report.support.get(browser);
 
-  let text = `${browser.data.name}`;
+  let text = `${browser.name}`;
   if (release === undefined) {
     return `${text} ❌`;
   }
