@@ -124,9 +124,9 @@ export function printMarkdown(
   ]);
 
   for (const report of cumulative.subreports) {
-    const url = feature(report.id).data.__compat?.mdn_url;
-    const linkText = url
-      ? `[\`${report.id}\`](${url}#browser_compatibility)`
+    const { mdn_url } = feature(report.id);
+    const linkText = mdn_url
+      ? `[\`${report.id}\`](${mdn_url}#browser_compatibility)`
       : `\`${report.id}\``;
 
     rows.push([

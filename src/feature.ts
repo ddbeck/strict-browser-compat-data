@@ -35,6 +35,10 @@ export class Feature {
     return `[Feature ${this.id}]`;
   }
 
+  get mdn_url(): string | undefined {
+    return this.data.__compat?.mdn_url;
+  }
+
   _supportedBy(browser: Browser): Release[] {
     const support = this.data?.__compat?.support;
     if (support === undefined) {
