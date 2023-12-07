@@ -66,10 +66,8 @@ export class Feature {
           `${feature} contains non-real values. Cannot expand support.`,
         );
       }
-      // TODO: Add a getter for `Browser` that makes it possible to `browser.name` instead of peering at the BCD directly.
       if (s.hasCaveats()) {
-        const { name } = browser.data;
-        const message = `${this} has support caveats in ${name} and may be deemed unsupported. Check underlying compat data for details.`;
+        const message = `${this} has support caveats in ${browser.name} and may be deemed unsupported. Check underlying compat data for details.`;
         caveats.push(message);
       }
 
