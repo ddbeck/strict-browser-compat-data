@@ -123,7 +123,15 @@ export function printMarkdown(
     browserSet.map((b) => formatVersion(b, cumulative)).join("<br>"),
   ]);
 
-  for (const report of cumulative.subreports) {
+  const subreports = [...cumulative.subreports] // Sorted by newest then by id, lexicographically
+    .sort((a, b) => a.id.localeCompare(b.id))
+    .sort((a, b) => {
+      const aDate = a.baseline_low_date?.getTime() ?? Infinity;
+      const bDate = b.baseline_low_date?.getTime() ?? Infinity;
+      return bDate < aDate ? -1 : aDate > bDate ? 1 : 0;
+    });
+
+  for (const report of subreports) {
     const { mdn_url } = feature(report.id);
     const linkText = mdn_url
       ? `[\`${report.id}\`](${mdn_url}#browser_compatibility)`
