@@ -27,6 +27,6 @@
     "yaml": "^2.3.4"
   },
   "peerDependencies": {
-    "@mdn/browser-compat-data": "^5.4.5"
+    "@mdn/browser-compat-data": "^5.5.0"
   }
 }
