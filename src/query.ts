@@ -9,7 +9,7 @@ export function query(path: string, data: unknown = bcd) {
     const next = pathElements.shift()!;
 
     if (!isIndexable(lookup) || !(next in lookup)) {
-      throw new Error(`${path} is unindexable at '${next}`);
+      throw new Error(`${path} is unindexable at '${next}'`);
     }
     lookup = lookup[next];
   }

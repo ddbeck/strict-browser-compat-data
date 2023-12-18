@@ -39,6 +39,7 @@ export function handler(argv) {
         );
       } catch (err) {
         if (err.message.includes("unindexable")) {
+          console.error(err.message);
           console.error(`${id} contains a non-existent feature. Skipping.`);
           continue;
         }
