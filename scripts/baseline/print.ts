@@ -81,7 +81,7 @@ function formatIndicator(report: StatusReport): string {
   return "❌ Not Baseline";
 }
 
-function formatKeystoneDate(report: StatusReport): string {
+export function formatKeystoneDate(report: StatusReport): string {
   if (report.baseline_low_date) {
     return report.baseline_low_date.toISOString().slice(0, 10);
   }

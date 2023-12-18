@@ -4,8 +4,9 @@ import { printHuman, printMarkdown, printYAML } from "./print";
 import { calculateCumulativeStatus } from "./calculate-status";
 import { reportFeature } from "./calculate-status";
 import { handler as handleUpdateFeature } from "./update-feature";
+import { toIDs } from "./tags";
 
-const argv = yargs(process.argv.slice(2))
+yargs(process.argv.slice(2))
   .command(
     "$0 <features..>",
     "Check the Baseline status of one or more BCD features",
@@ -16,6 +17,10 @@ const argv = yargs(process.argv.slice(2))
         demandOption: true,
       });
       yargs.boolean("markdown");
+      yargs.option("from-tags", {
+        describe: "Parse <features..> as tag names.",
+        type: "boolean",
+      });
       yargs.option("group-as", {
         describe: "Group subsequent keys under a specific name.",
         type: "string",
@@ -50,8 +55,11 @@ const argv = yargs(process.argv.slice(2))
   )
   .help().argv;
 
-function main() {
-  const feats: string[] = argv.features;
+function main(argv) {
+  const feats: string[] = argv.fromTags
+    ? toIDs(...argv.features)
+    : argv.features;
+
   const reports = feats.map((f) => reportFeature(f));
   const cumulative = calculateCumulativeStatus(
     reports,
