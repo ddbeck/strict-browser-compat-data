@@ -3,6 +3,7 @@ import yargs from "yargs";
 import { printHuman, printMarkdown, printYAML } from "./print";
 import { calculateCumulativeStatus } from "./calculate-status";
 import { reportFeature } from "./calculate-status";
+import { handler as handleUpdateFeature } from "./update-feature";
 
 const argv = yargs(process.argv.slice(2))
   .command(
@@ -25,6 +26,27 @@ const argv = yargs(process.argv.slice(2))
         type: "boolean",
       });
     },
+    main,
+  )
+  .command(
+    "update-feature <yaml..>",
+    "Update a web-features YAML file",
+    (yargs) => {
+      yargs.positional("yaml", {
+        describe: "One or more paths to web-features YAML files",
+        type: "array",
+        demandOption: true,
+      });
+      yargs.option("write", {
+        describe: "Write changes back to YAML (otherwise, print to stdout)",
+        type: "boolean",
+      });
+      yargs.option("update-only", {
+        describe: "Don't write new statuses, only refresh existing ones.",
+        type: "boolean",
+      });
+    },
+    handleUpdateFeature,
   )
   .help().argv;
 
@@ -50,5 +72,3 @@ function main() {
     printHuman(r);
   }
 }
-
-main();
