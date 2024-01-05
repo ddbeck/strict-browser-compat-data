@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
     "test": "mocha -r tsx --min --watch-extensions ts \"src/**/*.test.ts\"",
