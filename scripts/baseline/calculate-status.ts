@@ -1,6 +1,6 @@
-import { browser, Browser } from "../../src/browser";
-import { feature } from "../../src/feature";
-import { Release } from "../../src/release";
+import { browser, Browser } from "../../src/browser-compat-data/browser";
+import { feature } from "../../src/browser-compat-data/feature";
+import { Release } from "../../src/browser-compat-data/release";
 
 const browserIgnoreList = [browser("ie")];
 
