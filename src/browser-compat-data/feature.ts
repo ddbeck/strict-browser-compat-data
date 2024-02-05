@@ -6,8 +6,21 @@ import { isFeatureData } from "./typeUtils";
 import { Release } from "./release";
 import { RealSupportStatement, statement } from "./supportStatements";
 
+const knownFeatures = new Map<string, Feature>();
+
 export function feature(id: string, data?: Identifier): Feature {
-  return new Feature(id, data);
+  if (data) {
+    return new Feature(id, data);
+  }
+
+  const lookup = knownFeatures.get(id);
+  if (lookup) {
+    return lookup;
+  }
+
+  const f = new Feature(id, data);
+  knownFeatures.set(id, f);
+  return f;
 }
 
 export class Feature {
@@ -83,15 +96,16 @@ export class Feature {
     return releases;
   }
 
-  supportedBy(omit?: Browser[]): Release[] {
-    const ignorables = new Set(omit);
+  supportedBy(options?: { only?: Browser[]; omit?: Browser[] }): Release[] {
+    const includables = options?.only ? new Set(options.only) : null;
+    const ignorables = new Set(options?.omit ?? []);
 
     const browserIds = Object.keys(this.data?.__compat?.support || {});
     const browsers = browserIds.map((id) => browser(id));
 
     const result = [];
     for (const b of browsers) {
-      if (!ignorables.has(b)) {
+      if (!ignorables.has(b) && (includables === null || includables.has(b))) {
         result.push(...this._supportedBy(b));
       }
     }
