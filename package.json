@@ -4,8 +4,8 @@
   "description": "",
   "exports": {
     ".": "./dist/index.js",
-    "baseline": "./dist/baseline/index.js",
-    "browser-compat-data": "./dist/browser-compat-data/index.js"
+    "./baseline": "./dist/baseline/index.js",
+    "./browser-compat-data": "./dist/browser-compat-data/index.js"
   },
   "types": "./dist/index.d.ts",
   "type": "module",
