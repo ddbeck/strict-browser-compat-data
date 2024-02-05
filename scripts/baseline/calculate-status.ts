@@ -100,7 +100,7 @@ function supportIntroduced(
 export function reportFeature(id: string): StatusReport {
   const feat = feature(id);
 
-  const supportingReleases = feat.supportedBy(browserIgnoreList);
+  const supportingReleases = feat.supportedBy({ omit: browserIgnoreList });
   const coreBrowserSetReleases = supportingReleases.filter((rel) =>
     coreBrowserSet.includes(rel.browser),
   );
