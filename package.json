@@ -2,7 +2,11 @@
   "name": "@ddbeck/strict-browser-compat-data",
   "version": "0.1.0",
   "description": "",
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "baseline": "./dist/baseline/index.js",
+    "browser-compat-data": "./dist/browser-compat-data/index.js"
+  },
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
