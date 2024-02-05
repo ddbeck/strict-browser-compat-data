@@ -1,4 +1,4 @@
-import bcd from "@mdn/browser-compat-data" assert { type: "json" };
+import bcd from "@mdn/browser-compat-data";
 
 import { isIndexable } from "./typeUtils";
 
