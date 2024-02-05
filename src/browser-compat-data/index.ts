@@ -4,4 +4,4 @@ export * as query from "./query";
 export * as release from "./release";
 export * as supportStatements from "./supportStatements";
 export * as typeUtils from "./typeUtils";
-export * from "./walk";
+export { walk } from "./walk";
