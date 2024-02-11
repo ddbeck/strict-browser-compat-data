@@ -41,6 +41,6 @@ export function descendantKeys(data: unknown, path?: string): string[] {
   }
 
   throw Error(
-    `Unhandled traverse into descendants of object at ${path ?? "[root]"}.`,
+    `Unhandled traverse into descendants of object at ${path ?? "[root]"}`,
   );
 }
