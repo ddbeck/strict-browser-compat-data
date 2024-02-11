@@ -204,6 +204,10 @@ describe("statements", function () {
         assert.equal(rels.length, browser("chrome").releases().length);
       });
 
+      // TODO: This test could be more specific. Really, handling ≤ gracefully
+      // is context dependent: do you care about the releases before the start
+      // of that range? If so, you should be able to opt-in to warnings or
+      // errors about it.
       it("handles ≤ gracefully", function () {
         const st = new RealSupportStatement({ version_added: "≤11" }, "chrome");
         const rels = st.supportedBy();

@@ -9,6 +9,12 @@ import { browser } from "./browser";
 import { Release } from "./release";
 import { Feature } from "./feature";
 
+// TODO: This stuff is slow, clunky, and weirdly indirect. It was helpful to get
+// started (especially before I knew all of the variations that a given
+// statement could express), but we might be better served by extracting
+// `supportedBy()` into something like an `expandToReleases(browser: Browser,
+// statement: SimpleSupportStatement)` function or similar.
+
 export function statement(
   incoming:
     | Partial<SimpleSupportStatement>
@@ -140,6 +146,9 @@ export class RealSupportStatement extends SupportStatement {
     return super.version_removed as string | false;
   }
 
+  // TODO: `supportedBy()` ought to be (partially) implemented on non-real value
+  // support statements. For example, `"version_added": true` should allow for
+  // returning `[this.browser.current()]` at least.
   supportedBy() {
     if (this.browser === undefined) {
       throw Error("This support statement's browser is unknown.");
