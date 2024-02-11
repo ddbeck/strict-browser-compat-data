@@ -27,12 +27,10 @@ export function descendantKeys(data: unknown, path?: string): string[] {
   }
 
   if (isCompatStatement(data)) {
-    console.log(`${path} is CompatStatement`);
     return [];
   }
 
   if (isBrowserStatement(data)) {
-    console.log(`${path} is BrowserStatement`);
     return [];
   }
 
