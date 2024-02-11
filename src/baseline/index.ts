@@ -14,6 +14,7 @@ interface SupportStatus {
   baseline_low_date: string | null;
   support: Map<Browser, Release | undefined>;
   baseline_high_date: string | null;
+  toJSON: () => string;
 }
 
 export function computeBaseline(
@@ -60,5 +61,53 @@ export function computeBaseline(
     baseline_low_date,
     baseline_high_date,
     support: s,
+    toJSON: function () {
+      return jsonify(this);
+    },
   };
+}
+
+function jsonify(status: SupportStatus): string {
+  const { baseline_low_date, baseline_high_date } = status;
+  const support: Record<string, string> = {};
+
+  for (const [browser, release] of status.support.entries()) {
+    if (release !== undefined) {
+      support[browser.id] = release.version;
+    }
+  }
+
+  if (status.baseline === "high") {
+    return JSON.stringify(
+      {
+        baseline: status.baseline,
+        baseline_low_date,
+        baseline_high_date,
+        support,
+      },
+      undefined,
+      2,
+    );
+  }
+
+  if (status.baseline === "low") {
+    return JSON.stringify(
+      {
+        baseline: status.baseline,
+        baseline_low_date,
+        support,
+      },
+      undefined,
+      2,
+    );
+  }
+
+  return JSON.stringify(
+    {
+      baseline: status.baseline,
+      support,
+    },
+    undefined,
+    2,
+  );
 }
