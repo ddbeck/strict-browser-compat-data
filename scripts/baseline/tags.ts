@@ -1,4 +1,4 @@
-import { walk } from "../../src/walk.ts";
+import { walk } from "../../src/browser-compat-data";
 
 export function toIDs(...tags: string[]): string[] {
   const feats: string[] = [];

@@ -1,9 +1,9 @@
 import { markdownTable } from "markdown-table";
 import { stringify } from "yaml";
 
-import { Release } from "../../src/release";
+import { Release } from "../../src/browser-compat-data";
 import { StatusReport, CumulativeStatusReport } from "./calculate-status";
-import { feature } from "../../src/feature";
+import { feature } from "../../src/browser-compat-data";
 
 type BrowserIdentifier =
   | "chrome"
