@@ -33,5 +33,8 @@
   },
   "peerDependencies": {
     "@mdn/browser-compat-data": "github:mdn/browser-compat-data"
+  },
+  "dependencies": {
+    "@js-temporal/polyfill": "^0.4.4"
   }
 }
