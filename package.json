@@ -32,7 +32,7 @@
     "yaml": "^2.3.4"
   },
   "peerDependencies": {
-    "@mdn/browser-compat-data": "github:mdn/browser-compat-data"
+    "@mdn/browser-compat-data": ">5.0.0"
   },
   "dependencies": {
     "@js-temporal/polyfill": "^0.4.4"
