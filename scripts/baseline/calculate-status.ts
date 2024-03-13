@@ -2,8 +2,6 @@ import { browser, Browser } from "../../src/browser-compat-data/browser";
 import { feature } from "../../src/browser-compat-data/feature";
 import { Release } from "../../src/browser-compat-data/release";
 
-const browserIgnoreList = [browser("ie")];
-
 export type StatusReport = {
   id: string;
   baseline: "low" | "high" | false;
@@ -100,7 +98,7 @@ function supportIntroduced(
 export function reportFeature(id: string): StatusReport {
   const feat = feature(id);
 
-  const supportingReleases = feat.supportedBy({ omit: browserIgnoreList });
+  const supportingReleases = feat.supportedBy({ only: coreBrowserSet });
   const coreBrowserSetReleases = supportingReleases.filter((rel) =>
     coreBrowserSet.includes(rel.browser),
   );
