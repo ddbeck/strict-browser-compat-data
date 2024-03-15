@@ -1,3 +1,4 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { browser, Browser } from "../../src/browser-compat-data/browser";
 import { feature } from "../../src/browser-compat-data/feature";
 import { Release } from "../../src/browser-compat-data/release";
@@ -120,7 +121,7 @@ export function reportFeature(id: string): StatusReport {
     }
   }
 
-  let baseline_low_date: Date | undefined;
+  let baseline_low_date: Temporal.PlainDate | undefined;
   let baseline_low_release: Release | undefined;
 
   if (baseline) {
@@ -129,7 +130,10 @@ export function reportFeature(id: string): StatusReport {
         continue;
       }
 
-      if (!baseline_low_date || rel.date() > baseline_low_date) {
+      if (
+        !baseline_low_date ||
+        Temporal.PlainDate.compare(rel.date(), baseline_low_date) < 1
+      ) {
         baseline_low_date = rel.date();
         baseline_low_release = rel;
       }
@@ -156,9 +160,10 @@ function isBaselineHigh(releases: Release[]): boolean {
 }
 
 function isBaselineHighRelease(release: Release) {
-  const baselineHighCutoff = new Date();
-  baselineHighCutoff.setMonth(baselineHighCutoff.getMonth() - 30);
-  return release.date() >= baselineHighCutoff;
+  const baselineHighCutoff = Temporal.Now.plainDateISO().subtract({
+    months: 30,
+  });
+  return Temporal.PlainDate.compare(release.date(), baselineHighCutoff) < 1;
 }
 
 const baselineHighReleases = coreBrowserSet

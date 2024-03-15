@@ -57,11 +57,10 @@ export function printHuman(report: StatusReport): void {
   const statusEmoji = formatIndicator(report);
   console.log(`${statusEmoji} ${id}`);
   for (const [key, value] of support.entries()) {
+    const date = value?.date();
+    const displayDate = date ? date.toString().slice(0, 10) : "";
     console.log(
-      `\t${key.id}: ${value ? value.version : "null"} \t\t${value
-        ?.date()
-        .toISOString()
-        .slice(0, 10)}`,
+      `\t${key.id}: ${value ? value.version : "null"} \t\t${displayDate}`,
     );
   }
   console.log(
