@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 
+import { Temporal } from "@js-temporal/polyfill";
+
 import { browser } from "./browser";
 import { Release } from "./release";
-import { Temporal } from "@js-temporal/polyfill";
 
 describe("Release", function () {
   describe("toString()", function () {

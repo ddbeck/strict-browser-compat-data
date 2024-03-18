@@ -1,10 +1,10 @@
+import { Temporal } from "@js-temporal/polyfill";
 import { BrowserName, BrowserStatement } from "@mdn/browser-compat-data";
 
-import { Release } from "./release";
 import { defaultCompat } from "./compat";
-import { Temporal } from "@js-temporal/polyfill";
+import { Release } from "./release";
 
-const VERY_FAR_FUTURE_DATE = Temporal.Now.plainDateISO().add({
+export const VERY_FAR_FUTURE_DATE = Temporal.Now.plainDateISO().add({
   years: 100,
 });
 
