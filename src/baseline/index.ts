@@ -7,9 +7,11 @@ import { Release } from "../browser-compat-data/release";
 import { browsers, highReleases, lowReleases } from "./core-browser-set";
 import { support } from "./support";
 import { Browser } from "../browser-compat-data/browser";
-import { VERY_FAR_FUTURE_DATE } from "../constants";
+import {
+  BASELINE_LOW_TO_HIGH_DURATION,
+  VERY_FAR_FUTURE_DATE,
+} from "../constants";
 import { Compat, defaultCompat } from "../browser-compat-data/compat";
-import { BASELINE_LOW_TO_HIGH_DURATION } from "../constants";
 
 interface FeatureSelector {
   compatKeys: [string, ...string[]];
