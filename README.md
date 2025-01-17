@@ -1,3 +1,12 @@
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
+This work has become part of the [web-features](https://github.com/web-platform-dx/web-features/) project.
+If you need to work with browser compat data, or using and generating Baseline statuses, go there.
+
+<details>
+
+<summary>Old documentation</summary>
+
 ## Before you begin.
 
 1. `npm install`
@@ -32,3 +41,5 @@
 ### Write the update to the YAML file
 
 `$ npx tsx ./scripts/baseline/ update-feature ../web-platform-dx-web-features/feature-group-definitions/flexbox.yml --write`
+
+</details>
